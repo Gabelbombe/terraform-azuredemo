@@ -11,3 +11,11 @@ This is where HashiCorp Terraform comes in, providing a way to deploy cloud infr
 The install process for Terraform is straightforward - [download](https://www.terraform.io/downloads.html) the package appropriate for your OS and unzip it into a separate install directory. The package contains a single executable file, which you should also define a global `PATH` for. Instructions on setting the PATH on Linux and Mac can be found on [this page](https://stackoverflow.com/questions/14637979/how-to-permanently-set-path-on-linux), while [this page](https://stackoverflow.com/questions/1618280/where-can-i-set-path-to-make-exe-on-windows) contains instructions for setting the PATH on Windows. Verify your installation by running the `terraform` command - you should see a list of available Terraform options as output.
 
 Let's allow Terraform to access your Azure subscription and perform provisioning steps next.
+
+
+### Setting up Terraform Access to Azure 
+To unlock Terraform magic in Azure, you need to allow Terraform scripts to provision resources into your Azure subscriptions on your behalf. To enable that access, you need to setup two entities in Azure Active Directory (AAD) - AAD Application and AAD Service Principal - and use these entities' identifiers in your Terraform scripts. The reason for having both entities makes perfect sense in multi-tenant environments, where Service Principal is a local instance of a global AAD App and having a Service Principal allows for granular local access control to global resources.
+
+When working with Terraform, however, you will be using a single AAD Application and a single Service Principal to enable resource provisioning, but you still need to create both. To streamline this setup process, HashiCorp and Microsoft have written scripts that create all the necessary security infrastructure for you in Azure (AAD App and Service Principal), allowing you to simply execute these scripts and copy/paste the necessary information into your Terraform code.
+
+The steps below outline what you need to do to create an AAD Application and Service Principal using the scripts supplied.
